@@ -254,19 +254,20 @@ export abstract class InterfaceBuilder {
 
     let interfaceText = `export interface ${interfaceName} {\n`;
     if (schemaInfo.source === SchemaSource.Api || schemaInfo.source === SchemaSource.Extension) {
-      interfaceText += `  id: number;\n`;
+      interfaceText += `  documentId: string;\n`;
     }
+    if (interfaceName === 'Article') this.commonHelpers.logger.information(schemaInfo)
 
     let indentation = '  ';
     if ((schemaInfo.source === SchemaSource.Api || schemaInfo.source === SchemaSource.Extension) && schemaType === SchemaType.Standard) {
-      interfaceText += `  attributes: {\n`;
-      indentation += '  ';
+      // interfaceText += `  attributes: {\n`;
+      // indentation += '  ';
     }
 
     if (schemaInfo.source !== SchemaSource.Component) {
       interfaceText += `${indentation}createdAt: Date;`;
       interfaceText += `${indentation}updatedAt: Date;`;
-      interfaceText += `${indentation}publishedAt?: Date;`;
+      interfaceText += `${indentation}publishedAt?: Date;\n`;
     }
 
     const attributes = Object.entries(schemaInfo.schema.attributes);
@@ -513,7 +514,7 @@ export abstract class InterfaceBuilder {
       }
     }
     if ((schemaInfo.source === SchemaSource.Api || schemaInfo.source === SchemaSource.Extension) && schemaType === SchemaType.Standard) {
-      interfaceText += `  };\n`;
+      // interfaceText += `  };\n`;
     }
 
     interfaceText += '}\n';
