@@ -86,15 +86,13 @@ export abstract class InterfaceBuilder {
       this.addCommonSchema(commonSchemas, commonFolderModelsPath, 'User',
         `export interface User {
         id: number;
-        attributes: {
-          username: string;
-          email: string;
-          provider: string;
-          confirmed: boolean;
-          blocked: boolean;
-          createdAt: Date;
-          updatedAt: Date;
-        }
+        username: string;
+        email: string;
+        provider: string;
+        confirmed: boolean;
+        blocked: boolean;
+        createdAt: Date;
+        updatedAt: Date;
       }
       `, `export interface User_Plain {
         id: number;
@@ -126,24 +124,22 @@ export abstract class InterfaceBuilder {
     this.addCommonSchema(commonSchemas, commonFolderModelsPath, 'Media',
       `import { MediaFormat } from './MediaFormat';
     export interface Media {
-      id: number;
-      attributes: {
-        name: string;
-        alternativeText: string;
-        caption: string;
-        width: number;
-        height: number;
-        formats: { thumbnail: MediaFormat; small: MediaFormat; medium: MediaFormat; large: MediaFormat; };
-        hash: string;
-        ext: string;
-        mime: string;
-        size: number;
-        url: string;
-        previewUrl: string;
-        provider: string;
-        createdAt: Date;
-        updatedAt: Date;
-      }
+      documentId: string;
+      name: string;
+      alternativeText: string;
+      caption: string;
+      width: number;
+      height: number;
+      formats: { thumbnail: MediaFormat; small: MediaFormat; medium: MediaFormat; large: MediaFormat; };
+      hash: string;
+      ext: string;
+      mime: string;
+      size: number;
+      url: string;
+      previewUrl: string;
+      provider: string;
+      createdAt: Date;
+      updatedAt: Date;
     }
 
     export interface Media_Plain {
@@ -254,19 +250,20 @@ export abstract class InterfaceBuilder {
 
     let interfaceText = `export interface ${interfaceName} {\n`;
     if (schemaInfo.source === SchemaSource.Api || schemaInfo.source === SchemaSource.Extension) {
-      interfaceText += `  id: number;\n`;
+      interfaceText += `  documentId: string;\n`;
     }
+    if (interfaceName === 'Article') this.commonHelpers.logger.information(schemaInfo)
 
     let indentation = '  ';
     if ((schemaInfo.source === SchemaSource.Api || schemaInfo.source === SchemaSource.Extension) && schemaType === SchemaType.Standard) {
-      interfaceText += `  attributes: {\n`;
-      indentation += '  ';
+      // interfaceText += `  attributes: {\n`;
+      // indentation += '  ';
     }
 
     if (schemaInfo.source !== SchemaSource.Component) {
       interfaceText += `${indentation}createdAt: Date;`;
       interfaceText += `${indentation}updatedAt: Date;`;
-      interfaceText += `${indentation}publishedAt?: Date;`;
+      interfaceText += `${indentation}publishedAt?: Date;\n`;
     }
 
     const attributes = Object.entries(schemaInfo.schema.attributes);
@@ -513,7 +510,7 @@ export abstract class InterfaceBuilder {
       }
     }
     if ((schemaInfo.source === SchemaSource.Api || schemaInfo.source === SchemaSource.Extension) && schemaType === SchemaType.Standard) {
-      interfaceText += `  };\n`;
+      // interfaceText += `  };\n`;
     }
 
     interfaceText += '}\n';
