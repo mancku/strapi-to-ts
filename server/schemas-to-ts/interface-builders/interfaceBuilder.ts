@@ -284,7 +284,7 @@ export abstract class InterfaceBuilder {
       // Relation
       // -------------------------------------------------
       if (attributeValue.type === 'relation') {
-        propertyType = attributeValue.target === 'plugin::users-permissions.user'
+        propertyType = ['plugin::users-permissions.user', 'admin::user'].includes(attributeValue.target) 
           ? 'User'
           : `${pascalCase(attributeValue.target.split('.')[1])}`;
 
